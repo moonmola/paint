@@ -2,19 +2,18 @@ package com.dabong.paint
 
 import android.graphics.Color
 import android.graphics.Paint
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.SeekBar
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.activity_main.view.*
 
 class MainActivity : AppCompatActivity() {
-    companion object{
+    companion object {
         var STROKE_WIDTH = 12f
         var ERASER_WIDTH = 12f
-        lateinit var paint:Paint
+        lateinit var paint: Paint
         var backgroundColor = Color.parseColor("#FFFFFF")
     }
 
@@ -22,7 +21,7 @@ class MainActivity : AppCompatActivity() {
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        var drawColor = ResourcesCompat.getColor(resources, R.color.Black,null)
+        var drawColor = ResourcesCompat.getColor(resources, R.color.Black, null)
         val fragment = PaintFragment()
         val fragmentManager = supportFragmentManager
         val transaction = fragmentManager.beginTransaction()
@@ -34,7 +33,7 @@ class MainActivity : AppCompatActivity() {
         customPanel.visibility = View.GONE
 
 
-        blushButton.isSelected=true
+        blushButton.isSelected = true
         blushButton.setOnClickListener {
             turnBrush()
             paintStroke(drawColor, STROKE_WIDTH)
@@ -42,11 +41,11 @@ class MainActivity : AppCompatActivity() {
         eraserButton.setOnClickListener {
             turnEraser()
         }
-        detailButton.setOnClickListener{
+        detailButton.setOnClickListener {
             detailButton.isSelected = !detailButton.isSelected
-            if(detailButton.isSelected) {
+            if (detailButton.isSelected) {
                 customPanel.visibility = View.VISIBLE
-            }else{
+            } else {
                 customPanel.visibility = View.GONE
             }
         }
@@ -69,7 +68,7 @@ class MainActivity : AppCompatActivity() {
 
         eraser_width.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                ERASER_WIDTH = progress.toFloat()*2
+                ERASER_WIDTH = progress.toFloat() * 2
                 turnEraser()
             }
 
@@ -87,17 +86,19 @@ class MainActivity : AppCompatActivity() {
             turnBrush()
         }
     }
-    private fun turnBrush(){
-        eraserButton.isSelected= false
+
+    private fun turnBrush() {
+        eraserButton.isSelected = false
         blushButton.isSelected = true
     }
-    private fun turnEraser(){
-        eraserButton.isSelected= true
+
+    private fun turnEraser() {
+        eraserButton.isSelected = true
         blushButton.isSelected = false
         paintStroke(Color.parseColor("#FFFFFF"), ERASER_WIDTH)
     }
 
-    private fun paintStroke(drawColor:Int, STROKE_WIDTH:Float){
+    private fun paintStroke(drawColor: Int, STROKE_WIDTH: Float) {
         paint = Paint().apply {
             color = drawColor
             isAntiAlias = true
