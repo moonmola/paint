@@ -10,17 +10,70 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/White"
-        android:layout_above="@+id/customPanel"
+        android:layout_above="@+id/manuPanel"
         android:layout_margin="10dp"
         />
+    <RelativeLayout
+        android:id="@+id/manuPanel"
+        android:layout_alignParentBottom="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <ImageButton
+            android:id="@+id/blushButton"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:scaleType="fitCenter"
+            android:layout_marginRight="20dp"
+            android:tint="@color/button_selector"
+            android:src="@drawable/ic_baseline_brush_24"
+            android:background="@android:color/transparent"
+            android:textAllCaps="false"
+            />
+        <ImageButton
+            android:id="@+id/eraserButton"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginRight="20dp"
+            android:scaleType="fitCenter"
+            android:tint="@color/button_selector"
+            android:layout_toRightOf="@+id/blushButton"
+            android:src="@drawable/ic_baseline_eraser_24"
+            android:background="@android:color/transparent"
+            android:textAllCaps="false"
+            />
+        <ImageButton
+            android:id="@+id/detailButton"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginRight="20dp"
+            android:scaleType="fitCenter"
+            android:layout_toRightOf="@+id/eraserButton"
+            android:src="@drawable/ic_baseline_color_lens_24"
+            android:tint="@color/button_selector"
+            android:background="@android:color/transparent"
+            android:textAllCaps="false"
+            />
+        <ImageButton
+            android:id="@+id/saveButton"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:scaleType="fitCenter"
+            android:layout_toRightOf="@+id/detailButton"
+            android:src="@drawable/ic_baseline_save_alt_24"
+            android:background="@android:color/transparent"
+            android:textAllCaps="false"
+            />
+
+    </RelativeLayout>
 
 
     <ScrollView
         android:id="@+id/customPanel"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:layout_alignParentBottom="true"
         android:layout_marginBottom="0dp"
+        android:layout_above="@+id/manuPanel"
+        android:background="@color/White"
         android:padding="10dp">
 
         <RelativeLayout
@@ -66,8 +119,7 @@
                 android:layout_below="@+id/stroke_color"
                 android:layout_marginTop="10dp"
                 android:text="@string/eraser"
-                android:textColor="#000000"
-                />
+                android:textColor="#000000" />
 
             <SeekBar
                 android:id="@+id/eraser_width"
@@ -76,7 +128,8 @@
                 android:layout_below="@+id/stroke_color"
                 android:layout_marginTop="10dp"
                 android:layout_toEndOf="@+id/eraser_text"
-                android:layout_toRightOf="@+id/eraser_text" />
+                android:layout_toRightOf="@+id/eraser_text"
+                />
 
             <ImageButton
                 android:id="@+id/save_btn"
