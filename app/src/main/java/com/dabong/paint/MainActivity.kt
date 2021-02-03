@@ -3,8 +3,10 @@ package com.dabong.paint
 import android.graphics.Color
 import android.graphics.Paint
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.SeekBar
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
 import kotlinx.android.synthetic.main.activity_main.*
@@ -22,10 +24,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         var drawColor = ResourcesCompat.getColor(resources, R.color.Black, null)
-        val fragment = PaintFragment()
-        val fragmentManager = supportFragmentManager
-        val transaction = fragmentManager.beginTransaction()
-        transaction.add(R.id.frame, fragment, "PAINT_FRAGMENT").commit()
+
 
         stroke_width.progress = STROKE_WIDTH.toInt()
         eraser_width.progress = ERASER_WIDTH.toInt()
@@ -48,6 +47,16 @@ class MainActivity : AppCompatActivity() {
             } else {
                 customPanel.visibility = View.GONE
             }
+        }
+        undoButton.setOnClickListener {
+            frame.undoPath()
+        }
+        redoButton.setOnClickListener {
+            frame.redoPath()
+        }
+        saveButton.setOnClickListener {
+            Log.e("??","?")
+            Toast.makeText(this,"곧 지원될 예정입니다^^;",Toast.LENGTH_LONG).show()
         }
         stroke_width.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {

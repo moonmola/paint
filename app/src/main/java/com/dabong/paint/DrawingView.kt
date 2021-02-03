@@ -2,43 +2,30 @@ package com.dabong.paint
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.graphics.Bitmap
 import android.graphics.Canvas
+import android.graphics.Paint
 import android.graphics.Path
+import android.util.AttributeSet
+import android.util.Log
 import android.view.MotionEvent
 import android.view.View
-import android.widget.Toast
 
-class DrawingView(context: Context) : View(context) {
-    private var paths = ArrayList<Path>()
-    private var undonePaths = ArrayList<Path>()
+class DrawingView @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0
+) :
+    View(context, attrs, defStyleAttr) {
+    private var lines = ArrayList<lineData>()
+    private var undoneLines = ArrayList<lineData>()
 
     companion object {
-        lateinit var extraCanvas: Canvas
-        lateinit var extraBitmap: Bitmap
         var path = Path()
     }
 
     var currentX: Float = 0F
     var currentY: Float = 0F
 
-
-    override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
-        super.onSizeChanged(w, h, oldw, oldh)
-        try {
-            if (width > 0 && height > 0) {
-                extraBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
-                extraCanvas = Canvas(extraBitmap)
-                extraCanvas.drawColor(MainActivity.backgroundColor)
-            }
-        } catch (e: IllegalArgumentException) {
-            Toast.makeText(
-                context,
-                "Some Thing is not right please restart the app",
-                Toast.LENGTH_LONG
-            ).show()
-        }
-    }
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onTouchEvent(event: MotionEvent): Boolean {
@@ -58,6 +45,7 @@ class DrawingView(context: Context) : View(context) {
         path.moveTo(mX, mY)
         currentX = mX
         currentY = mY
+        lines.add(lineData(path, MainActivity.paint))
     }
 
     private fun touchMove(mX: Float, mY: Float) {
@@ -69,27 +57,27 @@ class DrawingView(context: Context) : View(context) {
         )
         currentX = mX
         currentY = mY
-        extraCanvas.drawPath(path, MainActivity.paint)
-        invalidate() //??이건 왜
+
+        invalidate()
     }
 
     private fun touchUp() {
-        paths.add(path)
+        path = Path()
         path.reset()
+        Log.e("er", lines.size.toString())
     }
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
-        canvas.drawBitmap(extraBitmap, 0f, 0f, null)
-        for (path in paths) {
-            canvas.drawPath(path, MainActivity.paint)
+        for (i in lines) {
+            canvas.drawPath(i.path, i.color)
         }
     }
 
     fun undoPath() {
         when {
-            paths.size > 0 -> {
-                undonePaths.add(paths.removeAt(paths.size - 1))
+            lines.size > 0 -> {
+                undoneLines.add(lines.removeAt(lines.size - 1))
                 invalidate()
             }
         }
@@ -97,10 +85,14 @@ class DrawingView(context: Context) : View(context) {
 
     fun redoPath() {
         when {
-            undonePaths.size > 0 -> {
-                paths.add(undonePaths.removeAt(undonePaths.size - 1))
+            undoneLines.size > 0 -> {
+                lines.add(undoneLines.removeAt(undoneLines.size - 1))
                 invalidate()
             }
         }
+    }
+
+    inner class lineData(val path: Path, val color: Paint) {
+
     }
 }
